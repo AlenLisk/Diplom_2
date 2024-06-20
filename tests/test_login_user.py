@@ -5,6 +5,7 @@ class TestLoginCourier:
     @allure.title('Проверка логина пользователя')
     def test_courier_login(self, create_user):
         payload = create_user[0]
+        del payload['name']
         response_login = requests.post(Handles.handle_login_user, data=payload)
 
         assert response_login.status_code == 200 and response_login.json()['success'] == True
@@ -12,6 +13,7 @@ class TestLoginCourier:
     @allure.title('Проверка логина без email')
     def test_courier_login_without_email(self, create_user):
         payload = create_user[0]
+        del payload['name']
         payload['email'] = ''
         response_login = requests.post(Handles.handle_login_user, data=payload)
 
@@ -20,6 +22,7 @@ class TestLoginCourier:
     @allure.title('Проверка логина без пароля')
     def test_courier_login_without_password(self, create_user):
         payload = create_user[0]
+        del payload['name']
         payload['password'] = ''
         response_login = requests.post(Handles.handle_login_user, data=payload)
 

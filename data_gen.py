@@ -8,11 +8,11 @@ class DataGeneration:
         random_string = ''.join(random.choice(letters) for i in range(length))
         return random_string
 
-    def register_new_user_and_return_login_password(self, length=10):
+    def register_new_user_and_return_login_password(self):
 
-        email= f'{self.generate_random_string(length)}@gmail.com'
-        password = self.generate_random_string(length)
-        name = self.generate_random_string(length)
+        email= f'{self.generate_random_string()}@gmail.com'
+        password = self.generate_random_string()
+        name = self.generate_random_string()
 
         payload = {
             "email": email,
