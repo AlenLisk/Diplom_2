@@ -1,4 +1,5 @@
 from conftest import *
+from test_data import *
 
 
 class TestLoginCourier:
@@ -8,7 +9,7 @@ class TestLoginCourier:
         del payload['name']
         response_login = requests.post(Handles.handle_login_user, data=payload)
 
-        assert response_login.status_code == 200 and response_login.json()['success'] == True
+        assert response_login.status_code == StatusCode.ok_200 and response_login.json()['success'] == True
 
     @allure.title('Проверка логина без email')
     def test_courier_login_without_email(self, create_user):
@@ -17,7 +18,7 @@ class TestLoginCourier:
         payload['email'] = ''
         response_login = requests.post(Handles.handle_login_user, data=payload)
 
-        assert response_login.status_code == 401 and 'email or password are incorrect' in response_login.text
+        assert response_login.status_code == StatusCode.unauthorized_401 and ErrorMessage.INCORRECT_FIELDS in response_login.text
 
     @allure.title('Проверка логина без пароля')
     def test_courier_login_without_password(self, create_user):
@@ -26,29 +27,29 @@ class TestLoginCourier:
         payload['password'] = ''
         response_login = requests.post(Handles.handle_login_user, data=payload)
 
-        assert response_login.status_code == 401 and 'email or password are incorrect' in response_login.text
+        assert response_login.status_code == StatusCode.unauthorized_401 and ErrorMessage.INCORRECT_FIELDS in response_login.text
 
     @allure.title('Проверка логина с невалидным email')
     def test_courier_login_with_invalid_email(self, create_payload):
         payload = create_payload
-        payload['email'] = 'invalid_email'
+        payload['email'] = TestData.INVALID_EMAIL
         response_login = requests.post(Handles.handle_login_user, data=payload)
 
-        assert response_login.status_code == 401 and 'email or password are incorrect' in response_login.text
+        assert response_login.status_code == StatusCode.unauthorized_401 and ErrorMessage.INCORRECT_FIELDS in response_login.text
 
     @allure.title('Проверка логина с невалидным паролем')
     def test_courier_login_with_invalid_password(self, create_payload):
         payload = create_payload
-        payload['password'] = 'invalid_password'
+        payload['password'] = TestData.INVALID_PASSWORD
         response_login = requests.post(Handles.handle_login_user, data=payload)
 
-        assert response_login.status_code == 401 and 'email or password are incorrect' in response_login.text
+        assert response_login.status_code == StatusCode.unauthorized_401 and ErrorMessage.INCORRECT_FIELDS in response_login.text
 
     @allure.title('Проверка логина с несуществующим пользователем')
     def test_unregistered_user_login(self):
         payload = {}
-        payload['email'] = 'non-existent_email'
-        payload['password'] = '1234'
+        payload['email'] = TestData.EMAIL
+        payload['password'] = TestData.PASSWORD
         response_login = requests.post(Handles.handle_login_user, data=payload)
 
-        assert response_login.status_code == 401 and 'email or password are incorrect' in response_login.text
+        assert response_login.status_code == StatusCode.unauthorized_401 and ErrorMessage.INCORRECT_FIELDS in response_login.text

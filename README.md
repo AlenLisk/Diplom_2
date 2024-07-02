@@ -9,7 +9,7 @@
 **Фреймворк:** Pytest, Allure   
 
 **Перечень тестов:**   
-**test_cgange_user_data** - проверки домашней страницы   
+**test_change_user_data** - проверки домашней страницы   
 **test_create_order** - проверки создания заказа
 **test_create_user** - проверки создания кабинета
 **test_get_orders** - проверки получения заказов         
